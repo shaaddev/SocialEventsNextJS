@@ -1,0 +1,9 @@
+.welcome-username {
+    position: absolute;
+    margin: 0 auto;
+    padding: 6px 0;
+    text-align: left;
+    float: left;
+    width: 20%;
+    left: 2%;
+}
