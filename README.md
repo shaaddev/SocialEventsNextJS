@@ -1,6 +1,6 @@
 # Social Events
 
-__This is a full stack project created using _NextJS_ and _MongoDB_.__
+__This is a full stack project created using _NextJS_, _Bun_ and _MongoDB_.__
 
 _Originally created using the python based web framework Django_
 
@@ -16,11 +16,23 @@ Install dependencies
 $ nvm use 20.9.0
 
 $ npm install
+
+or
+
+$ bun install
 ```
 
 Run in Development
 ```zsh
 $ npm run dev
+
+or 
+
+$ bun run dev
+
+or
+
+$ bun --bun run dev # this option seems to have bugs currently so be aware
 ```
 
 ## Note
