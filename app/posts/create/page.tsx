@@ -4,17 +4,26 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function CreatePost() {
-    const [title, setTitle] = useState("");
-    const [caption, setCaption] = useState("");
-    const [location, setLocation] = useState("");
-    const [event_date, setEventDate] = useState("");
+    const [form, setForm] = useState({
+      title: "",
+      caption: "",
+      location: "",
+      event_date: ""
+    })
 
     const router = useRouter();
+
+    const handleChange = (e: any) => {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       
-      if (!title || !caption || !location || !event_date){
+      if (!form){
         alert("All fields are required.");
         return;
       }
@@ -25,8 +34,9 @@ export default function CreatePost() {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({title, caption, location, event_date})
+          body: JSON.stringify(form)
         });
+
 
         if (res.ok) {
           router.push('/')
@@ -35,7 +45,7 @@ export default function CreatePost() {
           throw new Error('failed to create post')
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log("Error: ", error);
       }
 
     };
@@ -55,12 +65,11 @@ export default function CreatePost() {
                                         <div className="flex rounded-md min-w-full justify-items-center shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <input
                                             type="text"
+                                            onChange={handleChange}
                                             name="title"
                                             id="title"
                                             maxLength={25}
                                             autoComplete="title"
-                                            onChange={(e) => setTitle(e.target.value)}
-                                            value={title}
                                             className="block flex-1 border-0 min-w-full bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
                                         </div>
@@ -76,11 +85,10 @@ export default function CreatePost() {
                                       <div className="mt-2">
                                         <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <textarea
+                                            onChange={handleChange}
                                             name="caption"
                                             id="caption"
                                             autoComplete="caption"
-                                            onChange={(e) => setCaption(e.target.value)}
-                                            value={caption}
                                             maxLength={255}
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
@@ -98,11 +106,10 @@ export default function CreatePost() {
                                         <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <input
                                             type="text"
+                                            onChange={handleChange}
                                             name="location"
                                             id="location"
                                             autoComplete="location"
-                                            onChange={(e) => setLocation(e.target.value)}
-                                            value={location}
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
                                         </div>
@@ -119,11 +126,10 @@ export default function CreatePost() {
                                         <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <input
                                             type="date"
+                                            onChange={handleChange}
                                             name="event_date"
                                             id="event_date"
                                             autoComplete="event_date"
-                                            onChange={(e) => setEventDate(e.target.value)}
-                                            value={event_date}
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
                                         </div>

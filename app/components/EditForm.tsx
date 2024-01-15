@@ -5,15 +5,29 @@ import { useRouter } from 'next/navigation';
 
 
 export default function EditForm({id, title, caption, location, event_date}: {id: string, title: string, caption: string, location: string, event_date: string}) {
-    const [newTitle, setNewTitle] = useState(title);
-    const [newCaption, setNewCaption] = useState(caption);
-    const [newLocation, setNewLocation] = useState(location);
-    const [newEventDate, setNewEventDate] = useState(event_date);
+    const [newForm, setNewForm] = useState({
+      newTitle: title,
+      newCaption: caption,
+      newLocation: location,
+      newEventDate: event_date
+    })
 
     const router = useRouter();
 
+    const handleChange = (e: any) => {
+      setNewForm({
+        ...newForm,
+        [e.target.name]: e.target.value
+      })
+    }
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+
+        if (!newForm){
+          alert("All fields are required!");
+          return;
+        }
         
         try {
             const res = await fetch(`/api/posts/${id}`, {
@@ -21,7 +35,7 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({newTitle, newCaption, newLocation, newEventDate}),
+                body: JSON.stringify(newForm),
             });
 
             if (!res.ok) {
@@ -51,11 +65,11 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                                         <div className="flex rounded-md min-w-full justify-items-center shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <input
                                             type="text"
-                                            name="title"
+                                            onChange={handleChange}
+                                            name="newTitle"
                                             id="title"
                                             autoComplete="title"
-                                            onChange={(e) => setNewTitle(e.target.value)}
-                                            value={newTitle}
+                                            maxLength={25}
                                             className="block flex-1 border-0 min-w-full bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
                                         </div>
@@ -71,11 +85,10 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                                       <div className="mt-2">
                                         <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <textarea
-                                            name="caption"
+                                            onChange={handleChange}
+                                            name="newCaption"
                                             id="caption"
                                             autoComplete="caption"
-                                            onChange={(e) => setNewCaption(e.target.value)}
-                                            value={newCaption}
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
                                         </div>
@@ -92,12 +105,11 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                                         <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <input
                                             type="text"
-                                            name="location"
+                                            onChange={handleChange}
+                                            name="newLocation"
                                             id="location"
                                             autoComplete="location"
-                                            // maxLength="25"
-                                            onChange={(e) => setNewLocation(e.target.value)}
-                                            value={newLocation}
+                                            maxLength={25}
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
                                         </div>
@@ -114,11 +126,10 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                                         <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                           <input
                                             type="date"
-                                            name="event_date"
+                                            onChange={handleChange}
+                                            name="newEventDate"
                                             id="event_date"
                                             autoComplete="event_date"
-                                            onChange={(e) => setNewEventDate(e.target.value)}
-                                            value={newEventDate}
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                           />
                                         </div>
