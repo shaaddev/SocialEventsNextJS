@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import '@/styles/side.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -68,6 +68,7 @@ export default function CreatePost() {
                                             onChange={handleChange}
                                             name="title"
                                             id="title"
+                                            required
                                             maxLength={25}
                                             autoComplete="title"
                                             className="block flex-1 border-0 min-w-full bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
@@ -87,6 +88,7 @@ export default function CreatePost() {
                                           <textarea
                                             onChange={handleChange}
                                             name="caption"
+                                            required
                                             id="caption"
                                             autoComplete="caption"
                                             maxLength={255}
@@ -108,6 +110,7 @@ export default function CreatePost() {
                                             type="text"
                                             onChange={handleChange}
                                             name="location"
+                                            required
                                             id="location"
                                             autoComplete="location"
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
@@ -128,6 +131,7 @@ export default function CreatePost() {
                                             type="date"
                                             onChange={handleChange}
                                             name="event_date"
+                                            required
                                             id="event_date"
                                             autoComplete="event_date"
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"

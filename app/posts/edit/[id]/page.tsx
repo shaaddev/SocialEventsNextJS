@@ -1,28 +1,16 @@
 import EditForm from '@/app/components/EditForm';
+const { posts } = require('@/lib/connect');
 
-const getPostById = async (id: string) => {
-  try {
-    const res = await fetch(`/api/posts/${id}`, {
-      method: 'GET',
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
-    if (!res.ok){
-      throw new Error('Falied to fetch post');
-    }
-
-    return res.json();
-  } catch (error) {
-    console.log("Error", error);
-  }
+interface Posts {
+  id: string,
+  title: string,
+  caption: string,
+  location: string,
+  event_date: string
 }
 
 export default async function EditPost({ params }: {params : {id: string}}){
   const { id } = params;
-  const post = await getPostById(id);
-  const {title, caption, location, event_date} = post || {};
-  return <EditForm id={id} title={title} caption={caption} location={location} event_date={event_date}/>;
+  const post: Posts = await posts.findOne({ _id: id});
+  return <EditForm id={id} title={post.title} caption={post.caption} location={post.location} event_date={post.event_date}/>;
 }

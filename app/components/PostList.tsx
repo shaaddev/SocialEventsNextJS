@@ -11,7 +11,6 @@ type Posts = {
     caption: string;
     location: string;
     event_date: string;
-    created_at: string;
 }
 
 export default function PostList(){
@@ -35,7 +34,6 @@ export default function PostList(){
                             <h3 className="title">{ p.title } - { p.event_date}</h3>
                             <h4 className="location">{ p.location }</h4>
                             <p className="caption">{ p.caption }</p>
-                            <p className="date-bottom">{ p.created_at }</p>
                             <div className='flex gap-2'>
                                 <Link className='update-icon' href={`/posts/edit/${p._id}`}>
                                     <HiDotsVertical />
