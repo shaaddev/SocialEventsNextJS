@@ -52,10 +52,10 @@ export default async function Navbar() {
                               </Link>
                             </li>
                             <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <LoginLink postLoginRedirectURL='/' className='flex items-center'>Login</LoginLink>
+                              <LoginLink className='flex items-center'>Login</LoginLink>
                             </li>
                             <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <RegisterLink postLoginRedirectURL='/' className='flex items-center'>Sign Up</RegisterLink>
+                              <RegisterLink className='flex items-center'>Sign Up</RegisterLink>
                             </li>
                           </>
                         )}
