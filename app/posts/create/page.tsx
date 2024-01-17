@@ -3,8 +3,6 @@ import '@/styles/side.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-// import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
-
 
 export default function CreatePost() {
     const [form, setForm] = useState({
