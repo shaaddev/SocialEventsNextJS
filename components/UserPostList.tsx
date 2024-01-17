@@ -1,7 +1,10 @@
 'use client';
 import '@/styles/post_list.css';
 import { useState, useEffect } from 'react';
-
+import Link from 'next/link';
+import { HiDotsVertical } from 'react-icons/hi';
+import DeleteBtn from './DeleteBtn';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 type Posts = {
     _id: string;
@@ -11,7 +14,7 @@ type Posts = {
     event_date: string;
 }
 
-export default function PostList(){
+export default function UserPostList(){
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -21,7 +24,11 @@ export default function PostList(){
             .catch((err) => console.log('failed to fetch: ', err))
     }, [])
 
-    return(
+    const { isAuthenticated, isLoading } = useKindeBrowserClient();
+
+    if (isLoading) return <div>Loading...</div>
+
+    return isAuthenticated ? (
         <> 
             <h1 className='m-5'>Social Events</h1>
             <div className='container mx-auto px-1 my-10 justify-center'>
@@ -32,11 +39,23 @@ export default function PostList(){
                             <h3 className="title">{ p.title } - { p.event_date}</h3>
                             <h4 className="location">{ p.location }</h4>
                             <p className="caption">{ p.caption }</p>
+                            <div className='flex gap-2'>
+                                <Link className='update-icon' href={`/posts/edit/${p._id}`}>
+                                    <HiDotsVertical />
+                                </Link>
+                            </div>
+                            <div className='flex gap-2'>
+                                <DeleteBtn id={p._id}/>
+                            </div>
                         </div>
                     </div>
             ))}
             </div>
         </>
-    )
+    ) : (
+        <>
+            You must be signed in to view your posts.
+        </>
+    );
 }
 

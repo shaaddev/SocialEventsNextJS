@@ -36,4 +36,4 @@ $ bun --bun run dev # this option seems to have bugs currently so be aware
 ```
 
 ## Note
-Some features are still lacking as a few bugs decided to pop up, so once those bugs are fixed, the website will be fully functional. With that, please feel free to add content but do be aware that anyone can edit your post or delete it.
+User authentication has been implemented but only signed in users can edit any posts now. Before anyone was able to create, edit and delete posts but as the web app continues to grow, it will reach stability.

@@ -2,6 +2,9 @@
 import '@/styles/side.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+// import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+
 
 export default function CreatePost() {
     const [form, setForm] = useState({
@@ -12,6 +15,7 @@ export default function CreatePost() {
     })
 
     const router = useRouter();
+
 
     const handleChange = (e: any) => {
       setForm({
@@ -50,8 +54,12 @@ export default function CreatePost() {
 
     };
 
-    return(
-        <div className='min-h-screen'>
+    const { isAuthenticated, isLoading } = useKindeBrowserClient();
+
+    if (isLoading) return <div className='flex min-h-screen flex-col items-center justify-between p-10'><main>Loading...</main></div>
+
+    return isAuthenticated ? (
+        <div className='min-h-screen px-2 md:px-24'>
             <div className='flex container mx-auto px-2 my-10 justify-center sm:px-2 md:px-10 lg:px-24'>
                 <div className='relative flex flex-col mt-6 text-neutral-200 bg-zinc-800 shadow-md bg-clip-border rounded-xl w-4/5 md:w-full sm:w-full lg:w-full'>
                         <form  onSubmit={handleSubmit} className='post-form p-5'>
@@ -147,5 +155,11 @@ export default function CreatePost() {
                 </div>
             </div>
         </div>
-    )
+    ) : (
+      <>
+        <main className='flex min-h-screen flex-col items-center justify-between py-5'>
+          You must be signed in to create a post.
+        </main>
+      </>
+    );
 }

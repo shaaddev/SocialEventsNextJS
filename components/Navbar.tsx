@@ -1,9 +1,11 @@
 import '@/styles/base.css';
 import Link from "next/link";
+import { RegisterLink, LoginLink, LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 
-export default function Navbar() {
-    const username: string = 'username';
-    const user: boolean = false;
+export default async function Navbar() {
+    const {getUser} = getKindeServerSession();
+    const user = await getUser();
 
     return (
         <nav className="sticky top-0 z-10 block w-full max-w-full px-4 py-2 text-white bg-neutral-900 border rounded-none shadow-md h-max border-neutral-950/80 bg-opacity-30 backdrop-blur-2xl backdrop-saturate-200 lg:px-8 lg:py-4">
@@ -11,7 +13,7 @@ export default function Navbar() {
                   {user ? 
                     <Link href="/"
                       className="mr-4 block cursor-pointer py-1.5 font-sans text-base font-medium leading-relaxed text-inherit antialiased">
-                      Welcome, @{username}
+                      Welcome, @{user.given_name}
                     </Link>
                   : 
                     <Link href="/"
@@ -39,27 +41,21 @@ export default function Navbar() {
                               </Link>
                             </li>
                             <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <Link href="/login" className="flex items-center">
-                                Logout
-                              </Link>
+                              <LogoutLink className='flex items-center'>Log out</LogoutLink>
                             </li>
                           </>
                         ) : (
                           <>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <Link href="/posts/create" className="flex items-center">
-                                Create Post
-                              </Link>
-                            </li>
                             <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
                               <Link href="/" className="flex items-center">
                                 Home
                               </Link>
                             </li>
                             <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <Link href="/login" className="flex items-center">
-                                Login
-                              </Link>
+                              <LoginLink postLoginRedirectURL='/' className='flex items-center'>Login</LoginLink>
+                            </li>
+                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                              <RegisterLink postLoginRedirectURL='/' className='flex items-center'>Sign Up</RegisterLink>
                             </li>
                           </>
                         )}

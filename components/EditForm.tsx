@@ -51,7 +51,7 @@ export default function EditForm({id, title, caption, location, event_date}: {id
 
 
     return(
-        <div className='min-h-screen'>
+        <div className='min-h-screen px-2 md:px-24'>
             <div className='flex container mx-auto px-2 my-10 justify-center sm:px-2 md:px-10 lg:px-24'>
                 <div className='relative flex flex-col mt-6 text-neutral-200 bg-zinc-800 shadow-md bg-clip-border rounded-xl w-4/5 md:w-full sm:w-full lg:w-full'>
                         <form  onSubmit={handleSubmit} className='post-form p-5'>
