@@ -1,4 +1,4 @@
-import EditForm from '@/app/components/EditForm';
+import EditForm from '@/components/EditForm';
 const { posts } = require('@/lib/connect');
 
 interface Posts {
