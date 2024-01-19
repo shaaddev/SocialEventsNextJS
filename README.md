@@ -1,6 +1,6 @@
 # Social Events
 
-__This is a full stack project created using _NextJS_, _Bun_ and _MongoDB_.__
+__This is a full stack project created using _NextJS_, _Bun_ and _PostgreSQL_.__
 
 _Originally created using the python based web framework Django_
 
