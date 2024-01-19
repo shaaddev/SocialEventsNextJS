@@ -1,9 +1,10 @@
 import '@/styles/post_list.css';
-const { posts } = require('@/lib/connect');
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
 
 type Posts = {
-    _id: string;
+    id: number;
     title: string;
     caption: string;
     location: string;
@@ -11,14 +12,14 @@ type Posts = {
 }
 
 export default async function PostList(){
-    const post = await posts.find({});
+    const post = await prisma.posts.findMany();
 
     return(
         <> 
             <h1 className='m-5'>Social Events</h1>
             <div className='container mx-auto px-1 my-10 justify-center'>
             {post.map((p: Posts) => (
-                    <div className='all_posts' key={p._id}>
+                    <div className='all_posts' key={p.id}>
                         <div className='p-5'>
                             <h3 className="post_user">@username</h3>
                             <h3 className="title">{ p.title } - { p.event_date}</h3>
