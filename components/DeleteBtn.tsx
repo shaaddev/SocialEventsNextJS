@@ -3,7 +3,7 @@ import '@/styles/side.css';
 import { FaTrash } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 
-export default function DeleteBtn({ id }: {id: string}) {
+export default function DeleteBtn({ id }: {id: number}) {
     const router = useRouter();
 
     const removePost = async () => {
