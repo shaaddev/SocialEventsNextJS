@@ -11,7 +11,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model posts {
+model Posts {
   id Int @id @default(autoincrement())
   title String 
   caption String
