@@ -4,6 +4,14 @@ import { HiDotsVertical } from 'react-icons/hi';
 import DeleteBtn from './DeleteBtn';
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { PrismaClient } from '@prisma/client';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
 const prisma = new PrismaClient();
 
@@ -25,22 +33,26 @@ export default async function UserPostList(){
             <h1 className='m-5'>Social Events</h1>
             <div className='container mx-auto px-1 my-10 justify-center'>
             {post.map((p: Posts) => (
-                    <div className='all_posts' key={p.id}>
-                        <div className='p-5'>
-                            <h3 className="post_user">@username</h3>
-                            <h3 className="title">{ p.title } - { p.event_date}</h3>
-                            <h4 className="location">{ p.location }</h4>
-                            <p className="caption">{ p.caption }</p>
-                            <div className='flex gap-2'>
-                                <Link className='update-icon' href={`/posts/edit/${p.id}`}>
-                                    <HiDotsVertical />
-                                </Link>
+                    <Card className='w-full my-6 md:my-0 md:w-[499px] md:h-[300px] bg-zinc-800 text-neutral-200 mb-9 border-none' key={p.id}>
+                        <CardContent>
+                            <div className='py-5'>
+                                <h3 className="post_user">@username</h3>
+                                <h3 className="title">{ p.title } - { p.event_date}</h3>
+                                <h4 className="location">{ p.location }</h4>
+                                <p className="caption">{ p.caption }</p>
                             </div>
-                            <div className='flex gap-2'>
-                                <DeleteBtn id={p.id}/>
-                            </div>
-                        </div>
-                    </div>
+                        </CardContent>
+                        <CardFooter className='flex justify-between opacity-50'>
+                                <div className='flex gap-2'>
+                                    <Link className='' href={`/posts/edit/${p.id}`}>
+                                        <HiDotsVertical />
+                                    </Link>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <DeleteBtn id={p.id}/>
+                                </div> 
+                        </CardFooter>
+                    </Card>
             ))}
             </div>
         </>

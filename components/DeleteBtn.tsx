@@ -23,7 +23,7 @@ export default function DeleteBtn({ id }: {id: number}) {
 
     return (
         <>
-            <button onClick={removePost} className='remove-icon'> <FaTrash /> </button>
+            <button onClick={removePost}> <FaTrash /> </button>
         </>
     )
 }
