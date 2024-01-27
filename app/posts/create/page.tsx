@@ -3,29 +3,57 @@ import '@/styles/side.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea"
+
+
+
+const formSchema = z.object({
+  title: z
+    .string({
+      required_error: "Please enter a title"
+    })
+    .max(25, {message: "Must be 25 or fewer characters long"}),
+  caption: z
+    .string({
+      required_error: "Please enter a caption"
+    })
+    .max(255),
+  location: z
+    .string({
+      required_error: "Please enter a location"
+    })
+    .max(25, {message: "Must be 25 or fewer characters long"}),
+  event_date: z
+    .string({
+      required_error: "Please select a date"
+    })
+})
 
 export default function CreatePost() {
-    const [form, setForm] = useState({
-      title: "",
-      caption: "",
-      location: "",
-      event_date: ""
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
     })
 
     const router = useRouter();
 
-
-    const handleChange = (e: any) => {
-      setForm({
-        ...form,
-        [e.target.name]: e.target.value,
-      });
-    }
-
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
+    const handleSubmit = async (data: z.infer<typeof formSchema>) => {
       
-      if (!form){
+      if (!data){
         alert("All fields are required.");
         return;
       }
@@ -36,7 +64,7 @@ export default function CreatePost() {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify(form)
+          body: JSON.stringify(data)
         });
 
 
@@ -54,105 +82,60 @@ export default function CreatePost() {
 
     const { isAuthenticated, isLoading } = useKindeBrowserClient();
 
-    if (isLoading) return <div className='flex min-h-screen flex-col items-center justify-between p-10'><main>Loading...</main></div>
+    if (isLoading) return <div className='flex min-h-screen flex-col items-center justify-between p-10'><main className='text-neutral-200'>Loading...</main></div>
 
     return isAuthenticated ? (
-        <div className='min-h-screen px-2 md:px-24'>
-            <div className='flex container mx-auto px-2 my-10 justify-center sm:px-2 md:px-10 lg:px-24'>
-                <div className='relative flex flex-col mt-6 text-neutral-200 bg-zinc-800 shadow-md bg-clip-border rounded-xl w-4/5 md:w-full sm:w-full lg:w-full'>
-                        <form  onSubmit={handleSubmit} className='post-form p-5'>
-                            <div className='space-y-6 mx-auto px-0'>
-                                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div className="sm:col-span-4">
-                                      <label htmlFor="title" className="block text-sm font-medium leading-6 text-neutral-200">
-                                        Title
-                                      </label>
-                                      <div className="mt-2">
-                                        <div className="flex rounded-md min-w-full justify-items-center shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                          <input
-                                            type="text"
-                                            onChange={handleChange}
-                                            name="title"
-                                            id="title"
-                                            required
-                                            maxLength={25}
-                                            autoComplete="title"
-                                            className="block flex-1 border-0 min-w-full bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div className="sm:col-span-4">
-                                      <label htmlFor="caption" className="block text-sm font-medium leading-6 text-neutral-200">
-                                        Caption
-                                      </label>
-                                      <div className="mt-2">
-                                        <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                          <textarea
-                                            onChange={handleChange}
-                                            name="caption"
-                                            required
-                                            id="caption"
-                                            autoComplete="caption"
-                                            maxLength={255}
-                                            className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div className="sm:col-span-4">
-                                      <label htmlFor="location" className="block text-sm font-medium leading-6 text-neutral-200">
-                                        location
-                                      </label>
-                                      <div className="mt-2">
-                                        <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                          <input
-                                            type="text"
-                                            onChange={handleChange}
-                                            name="location"
-                                            required
-                                            id="location"
-                                            autoComplete="location"
-                                            className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div className="sm:col-span-4">
-                                      <label htmlFor="event_date" className="block text-sm font-medium leading-6 text-neutral-200">
-                                        Event Date
-                                      </label>
-                                      <div className="mt-2">
-                                        <div className="flex rounded-md min-w-full shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                          <input
-                                            type="date"
-                                            onChange={handleChange}
-                                            name="event_date"
-                                            required
-                                            id="event_date"
-                                            autoComplete="event_date"
-                                            className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-neutral-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-
-                                <button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-1'>Post</button>
-                            </div>
-                        </form>
-                </div>
-            </div>
-        </div>
+        <main className='flex flex-col items-center justify-between p-5 md:p-20'>
+          <Card className='w-full md:w-3/5 mt-10 p-10 bg-zinc-800 text-neutral-200 border-none'>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
+                  <FormField 
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800' maxLength={25}/>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField 
+                    control={form.control}
+                    name="caption"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Caption</FormLabel>
+                        <Textarea {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800'/>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField 
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Location</FormLabel>
+                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800' maxLength={25}/>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField 
+                    control={form.control}
+                    name="event_date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Event Date</FormLabel>
+                        <Input type="date" {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800'/>
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0'>Post</Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </main>
     ) : (
       <>
         <main className='flex min-h-screen flex-col items-center justify-between py-5'>
