@@ -1,18 +1,14 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { db } from '@/db';
+import { posts } from '@/db/schema/posts';
+import { eq } from 'drizzle-orm';
 
-const prisma = new PrismaClient();
 
 export async function PUT(request: Request, { params }: { params : {id: string}} ){
     const { id } = params;
     const { newTitle: title, newCaption: caption, newLocation: location, newEventDate: event_date} = await request.json();
-    await prisma.posts.update({
-        where: {
-            id: parseInt(id),
-        },
-        data: {
-            title, caption, location, event_date
-        }
-    })
+    await db.update(posts)
+        .set({ title, caption, location, event_date})
+        .where(eq(posts.id, parseInt(id)))
     return NextResponse.json({ message: 'post updated'}, {status: 200});
 }

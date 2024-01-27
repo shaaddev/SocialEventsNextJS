@@ -1,16 +1,10 @@
 import '@/styles/post_list.css';
-import { PrismaClient } from '@prisma/client';
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card";
-  
-
-const prisma = new PrismaClient();
+import { db } from '@/db';
+import { posts } from '@/db/schema/posts';
 
 type Posts = {
     id: number;
@@ -21,7 +15,7 @@ type Posts = {
 }
 
 export default async function PostList(){
-    const post = await prisma.posts.findMany();
+    const post = await db.select().from(posts);
 
     return(
         <> 

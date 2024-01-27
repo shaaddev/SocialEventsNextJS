@@ -12,8 +12,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-
-const prisma = new PrismaClient();
+import { db } from '@/db';
+import { posts } from '@/db/schema/posts';
 
 type Posts = {
     id: number;
@@ -24,7 +24,7 @@ type Posts = {
 }
 
 export default async function UserPostList(){
-    const post = await prisma.posts.findMany();
+    const post = await db.select().from(posts);
 
     const { isAuthenticated } = getKindeServerSession();
 
@@ -32,7 +32,7 @@ export default async function UserPostList(){
         <> 
             <h1 className='m-5'>Social Events</h1>
             <div className='container mx-auto px-1 my-10 justify-center'>
-            {post.map((p: Posts) => (
+            {post.map((p: any) => (
                     <Card className='w-full md:w-[499px] md:h-[300px] bg-zinc-800 text-neutral-200 mb-9 border-none' key={p.id}>
                         <CardContent>
                             <div className='py-5'>
