@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { db } from '@/db';
 import { posts } from '@/db/schema/posts';
+import { desc } from 'drizzle-orm';
 
 type Posts = {
     id: number;
@@ -24,7 +25,7 @@ type Posts = {
 }
 
 export default async function UserPostList(){
-    const post = await db.select().from(posts);
+    const post = await db.select().from(posts).orderBy(desc(posts.id));
 
     const { isAuthenticated } = getKindeServerSession();
 
