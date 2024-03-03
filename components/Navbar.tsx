@@ -2,13 +2,14 @@ import '@/styles/base.css';
 import Link from "next/link";
 import { RegisterLink, LoginLink, LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import Theme from './Theme';
 
 export default async function Navbar() {
     const {getUser} = getKindeServerSession();
     const user = await getUser();
 
     return (
-        <nav className="sticky top-0 z-10 block w-full max-w-full px-4 py-2 text-white bg-neutral-900 border rounded-none shadow-md h-max border-neutral-950/80 bg-opacity-30 backdrop-blur-2xl backdrop-saturate-200 lg:px-8 lg:py-4">
+        <nav className="sticky top-0 z-10 block w-full max-w-full px-4 py-2 text-white bg-[#2b3944] dark:bg-neutral-900 border rounded-none shadow-md h-max border-neutral-950/30 bg-opacity-90 dark:bg-opacity-30 backdrop-blur-2xl backdrop-saturate-200 lg:px-8 lg:py-4">
                 <div className="flex items-center justify-between text-blue-gray-900">
                   {user ? 
                     <Link href="/"
@@ -59,6 +60,9 @@ export default async function Navbar() {
                             </li>
                           </>
                         )}
+                        <li className='block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900'>
+                          <Theme />
+                        </li>
                       </ul>
                     </div>
                   </div>

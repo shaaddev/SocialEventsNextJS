@@ -82,11 +82,11 @@ export default function CreatePost() {
 
     const { isAuthenticated, isLoading } = useKindeBrowserClient();
 
-    if (isLoading) return <div className='flex min-h-screen flex-col items-center justify-between p-10'><main className='text-neutral-200'>Loading...</main></div>
+    if (isLoading) return <div className='flex flex-col items-center justify-between p-14 mt-14'><main className='text-black dark:text-neutral-200'>Loading...</main></div>
 
     return isAuthenticated ? (
         <main className='flex flex-col items-center justify-between p-5 md:p-20'>
-          <Card className='w-full md:w-3/5 mt-10 p-10 bg-zinc-800 text-neutral-200 border-none'>
+          <Card className='w-full md:w-4/5 lg:w-3/5 mt-10 p-10 text-black bg-slate-200 dark:bg-zinc-800 dark:text-neutral-200 border-none'>
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
@@ -96,7 +96,7 @@ export default function CreatePost() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Title</FormLabel>
-                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800' maxLength={25}/>
+                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
                       </FormItem>
                     )}
                   />
@@ -106,7 +106,7 @@ export default function CreatePost() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Caption</FormLabel>
-                        <Textarea {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800'/>
+                        <Textarea {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
                       </FormItem>
                     )}
                   />
@@ -116,7 +116,7 @@ export default function CreatePost() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Location</FormLabel>
-                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800' maxLength={25}/>
+                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
                       </FormItem>
                     )}
                   />
@@ -126,7 +126,7 @@ export default function CreatePost() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Event Date</FormLabel>
-                        <Input type="date" {...field} className='border border-slate-200 border-opacity-10 bg-zinc-800'/>
+                        <Input type="date" {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
                       </FormItem>
                     )}
                   />
@@ -138,7 +138,7 @@ export default function CreatePost() {
         </main>
     ) : (
       <>
-        <main className='flex min-h-screen flex-col items-center justify-between py-5'>
+        <main className='flex flex-col items-center justify-between py-10'>
           You must be signed in to create a post.
         </main>
       </>

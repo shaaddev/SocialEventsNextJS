@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar';
+import { Providers } from './providers';
 
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -16,13 +17,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={montserrat.className && 'bg-neutral-900'}>
-        <Navbar />
+    <html lang="en" suppressHydrationWarning>
+      <body className={montserrat.className}>
+        <Providers>
+          <Navbar />
 
-        <main className='bg-neutral-900'>
-          {children}
-        </main>
+          <main>
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   )

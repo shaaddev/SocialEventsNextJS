@@ -31,10 +31,10 @@ export default async function UserPostList(){
 
     return ( await isAuthenticated()) ? (
         <> 
-            <h1 className='m-5'>Social Events</h1>
+            <h1 className='my-10 font-base text-black dark:text-neutral-200'>Social Events</h1>
             <div className='container mx-auto px-1 my-10 justify-center'>
             {post.map((p: any) => (
-                    <Card className='w-full md:w-[499px] md:h-[300px] bg-zinc-800 text-neutral-200 mb-9 border-none' key={p.id}>
+                    <Card className='w-full md:w-[499px] md:h-[300px] text-black bg-slate-200 shadow-md dark:shadow-none dark:bg-zinc-800 dark:text-neutral-200 mb-9 border-none' key={p.id}>
                         <CardContent>
                             <div className='py-5'>
                                 <h3 className="post_user">@username</h3>
