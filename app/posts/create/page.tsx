@@ -130,7 +130,7 @@ export default function CreatePost() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0'>Post</Button>
+                  <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0 dark:hover:text-black'>Post</Button>
                 </form>
               </Form>
             </CardContent>

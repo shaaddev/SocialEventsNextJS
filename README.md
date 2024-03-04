@@ -1,6 +1,6 @@
 # Social Events
 
-__This is a full stack project created using _NextJS_, _Bun_ and _PostgreSQL_.__
+__This is a full stack project created using _NextJS_, _Bun_, _KindeAuth_ and _PostgreSQL_.__
 
 _Originally created using the python based web framework Django_
 
@@ -36,4 +36,4 @@ $ bun --bun run dev # this option seems to have bugs currently so be aware
 ```
 
 ## Note
-User authentication has been implemented but only signed in users can edit any posts now. Before anyone was able to create, edit and delete posts but as the web app continues to grow, it will reach stability.
+After many nights of debugging, this web app has finally reached its stability version - v1

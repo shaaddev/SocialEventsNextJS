@@ -10,6 +10,8 @@ export async function POST(req: any){
 
     const { title, caption, location, event_date } = await req.json();
     await db.insert(posts).values({
+        kindeAuthId: user?.id as string,
+        kindeAuthName: user?.given_name as string,
         title: title,
         caption: caption,
         location: location,
