@@ -11,7 +11,8 @@ import {
   Form,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea"
@@ -21,26 +22,35 @@ const formSchema = z.object({
     .string({
       required_error: "Please enter a title"
     })
+    .min(5, {message: 'required'})
     .max(25, {message: "Must be 25 or fewer characters long"}),
   new_caption: z
     .string({
       required_error: "Please enter a caption"
     })
+    .min(5, {message: 'required'})
     .max(255),
   new_location: z
     .string({
       required_error: "Please enter a location"
     })
+    .min(5, {message: 'required'})
     .max(25, {message: "Must be 25 or fewer characters long"}),
-  event_date: z
+  new_event_date: z
     .string({
       required_error: "Please select a date"
     })
-})
+}).required()
 
 export default function EditForm({id, title, caption, location, event_date}: {id: string, title: string, caption: string, location: string, event_date: string}) {
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
+      defaultValues: {
+        new_title: title,
+        new_caption: caption,
+        new_location: location,
+        new_event_date: event_date
+      }
     })
 
     const router = useRouter();
@@ -87,6 +97,7 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                         <FormItem>
                           <FormLabel>Title</FormLabel>
                           <Input {...field}  className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -96,7 +107,8 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Caption</FormLabel>
-                          <Textarea {...field}  className='border dark:border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
+                          <Textarea {...field}  className='border dark:border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={255}/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -107,20 +119,22 @@ export default function EditForm({id, title, caption, location, event_date}: {id
                         <FormItem>
                           <FormLabel>Location</FormLabel>
                           <Input {...field}  className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
                     <FormField 
                       control={form.control}
-                      name="event_date"
+                      name="new_event_date"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Event Date</FormLabel>
                           <Input type="date" {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0'>Update Post</Button>
+                    <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0 dark:hover:text-black dark:hover:bg-slate-300'>Update Post</Button>
                   </form>
                 </Form>
               </CardContent>

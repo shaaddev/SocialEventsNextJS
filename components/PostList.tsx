@@ -19,8 +19,6 @@ type Posts = {
 }
 
 export default async function PostList(){
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
 
     const post = await db.select().from(posts).orderBy(desc(posts.id));
 

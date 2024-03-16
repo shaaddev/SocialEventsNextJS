@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm';
 
 export async function PUT(request: Request, { params }: { params : {id: string}} ){
     const { id } = params;
-    const { newTitle: title, newCaption: caption, newLocation: location, newEventDate: event_date} = await request.json();
+    const { new_title: title, new_caption: caption, new_location: location, new_event_date: event_date} = await request.json();
     await db.update(posts)
         .set({ title, caption, location, event_date})
         .where(eq(posts.id, parseInt(id)))

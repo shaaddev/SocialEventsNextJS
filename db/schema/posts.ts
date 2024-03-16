@@ -3,7 +3,6 @@ import { pgTable, timestamp, text, index, integer  } from "drizzle-orm/pg-core";
 
 let l = 1;
 
-
 export const posts = pgTable('posts', {
         id: integer('id').notNull().primaryKey().default(l++),
         kindeAuthId: text('kindeauthid'),

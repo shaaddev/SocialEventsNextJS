@@ -27,22 +27,25 @@ const formSchema = z.object({
     .string({
       required_error: "Please enter a title"
     })
+    .min(5, {message: 'required'})
     .max(25, {message: "Must be 25 or fewer characters long"}),
   caption: z
     .string({
       required_error: "Please enter a caption"
     })
+    .min(5, {message: 'required'})
     .max(255),
   location: z
     .string({
       required_error: "Please enter a location"
     })
+    .min(5, {message: 'required'})
     .max(25, {message: "Must be 25 or fewer characters long"}),
   event_date: z
     .string({
       required_error: "Please select a date"
     })
-})
+}).required()
 
 export default function CreatePost() {
     const form = useForm<z.infer<typeof formSchema>>({
@@ -96,7 +99,8 @@ export default function CreatePost() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Title</FormLabel>
-                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
+                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -107,6 +111,7 @@ export default function CreatePost() {
                       <FormItem>
                         <FormLabel>Caption</FormLabel>
                         <Textarea {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -116,7 +121,8 @@ export default function CreatePost() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Location</FormLabel>
-                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
+                        <Input {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -127,10 +133,11 @@ export default function CreatePost() {
                       <FormItem>
                         <FormLabel>Event Date</FormLabel>
                         <Input type="date" {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0 dark:hover:text-black'>Post</Button>
+                  <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0 dark:hover:text-black dark:hover:bg-slate-300'>Post</Button>
                 </form>
               </Form>
             </CardContent>
