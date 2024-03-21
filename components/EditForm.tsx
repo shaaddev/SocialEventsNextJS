@@ -1,145 +1,83 @@
 'use client';
 import '@/styles/side.css';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea"
-
-const formSchema = z.object({
-  new_title: z
-    .string({
-      required_error: "Please enter a title"
-    })
-    .min(5, {message: 'required'})
-    .max(25, {message: "Must be 25 or fewer characters long"}),
-  new_caption: z
-    .string({
-      required_error: "Please enter a caption"
-    })
-    .min(5, {message: 'required'})
-    .max(255),
-  new_location: z
-    .string({
-      required_error: "Please enter a location"
-    })
-    .min(5, {message: 'required'})
-    .max(25, {message: "Must be 25 or fewer characters long"}),
-  new_event_date: z
-    .string({
-      required_error: "Please select a date"
-    })
-}).required()
+import { Label } from "@/components/ui/label";
+import { updatePost } from '@/actions/updatePost';
 
 export default function EditForm({id, title, caption, location, event_date}: {id: string, title: string, caption: string, location: string, event_date: string}) {
-    const form = useForm<z.infer<typeof formSchema>>({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        new_title: title,
-        new_caption: caption,
-        new_location: location,
-        new_event_date: event_date
-      }
-    })
-
-    const router = useRouter();
-
-    const handleSubmit = async (new_data: z.infer<typeof formSchema>) => {
-
-        if (!new_data){
-          alert("All fields are required!");
-          return;
-        }
-        
-        try {
-            const res = await fetch(`/api/posts/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(new_data),
-            });
-
-            if (!res.ok) {
-                throw new Error('Failed to update topic')
-            }
-
-            router.push('/');
-            router.refresh();
-        } catch (error) {
-            console.log("Error: ", error);
-        }
-    }
+    const { register, setValue } = useForm();
 
 
-    return(
+    useEffect(() => {
+      setValue("new_title", title);
+      setValue("new_caption", caption);
+      setValue("new_location", location);
+      setValue("new_event_date", event_date);
+    }, [setValue])
+
+
+    const { isAuthenticated, isLoading } = useKindeBrowserClient();
+
+    if (isLoading) return <div className='flex flex-col items-center justify-between p-14 mt-14'><main className='text-black dark:text-neutral-200'>Loading...</main></div>
+
+    return isAuthenticated ? (
         <>
           <main className='flex flex-col items-center justify-between p-5 md:p-20'>
             <Card className='w-full md:w-3/5 mt-10 p-10 text-black bg-slate-200 dark:bg-zinc-800 dark:text-neutral-200 border-none'>
               <CardContent>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
-                    <FormField 
-                      control={form.control}
-                      name="new_title"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Title</FormLabel>
-                          <Input {...field}  className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                  <form onSubmit={ async (e) => {
+                    e.preventDefault();
+
+                    const formData = new FormData(e.currentTarget)
+                    await updatePost(formData, id);
+                  }} className='space-y-6'>
+                    <Input 
+                      id="new_title" 
+                      placeholder="Title" 
+                      className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'
+                      {...register("new_title", { required: true})}
                     />
-                    <FormField 
-                      control={form.control}
-                      name="new_caption"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Caption</FormLabel>
-                          <Textarea {...field}  className='border dark:border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={255}/>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                    
+                    <Textarea 
+                      id="new_caption" 
+                      placeholder='Caption' 
+                      className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'
+                      {...register("new_caption", { required: true})}
                     />
-                    <FormField 
-                      control={form.control}
-                      name="new_location"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Location</FormLabel>
-                          <Input {...field}  className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800' maxLength={25}/>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+
+                    <Input 
+                      id="new_location" 
+                      placeholder='Location' 
+                      className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'
+                      {...register("new_location", { required: true})}
                     />
-                    <FormField 
-                      control={form.control}
-                      name="new_event_date"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Event Date</FormLabel>
-                          <Input type="date" {...field} className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'/>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+
+              
+                    <Label htmlFor='new_event_date'>Event Date</Label>
+                    <Input 
+                      id="new_event_date" 
+                      type="date" 
+                      placeholder='Event Date' 
+                      className='border border-slate-200 border-opacity-10 bg-white dark:bg-zinc-800'
+                      {...register("new_event_date", { required: true})}
                     />
                     <Button type="submit" className='rounded-full bg-cyan-950 text-slate-200 px-7 py-0 m-0 dark:hover:text-black dark:hover:bg-slate-300'>Update Post</Button>
                   </form>
-                </Form>
               </CardContent>
             </Card>
           </main>
         </>
+    ) : (
+      <>
+        <main className='flex flex-col items-center justify-between py-10'>
+          You must be signed in to create a post.
+        </main>
+      </>
     )
 }

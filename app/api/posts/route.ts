@@ -1,29 +1,46 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { posts } from '@/db/schema/posts'; 
+import { media } from '@/db/schema/media';
 import { eq } from 'drizzle-orm';
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
-export async function POST(req: any){
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+const ak = process.env.AWS_A_KEY!
+const sa_k = process.env.AWS_SA_KEY!
+const region = process.env.AWS_BUCKET_REGION!
+const bucket = process.env.AWS_BUCKET_NAME!
 
-    const { title, caption, location, event_date } = await req.json();
-    await db.insert(posts).values({
-        kindeAuthId: user?.id as string,
-        kindeAuthName: user?.given_name as string,
-        title: title,
-        caption: caption,
-        location: location,
-        event_date: event_date
-    });
-    return NextResponse.json({message: 'submitted'}, {status: 201})
-}
 
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: ak,
+        secretAccessKey: sa_k
+    },
+    region: region
+})
 
 export async function DELETE(req: any) {
+    const {isAuthenticated} = getKindeServerSession();
+    
+    if (!isAuthenticated){
+        return {failure: "Not Authenticated"}
+    }
     const id = req.nextUrl.searchParams.get('id');
+
+    const mediaItem = await db.delete(media)
+        .where(eq(media.post_id, id))
+        .returning().then((res) => res[0]);
+
     await db.delete(posts)
         .where(eq(posts.id, parseInt(id)));    
+
+
+    const deleteObjectCommand = new DeleteObjectCommand({
+        Bucket: bucket,
+        Key: mediaItem.url.split('/').pop()!
+    })
+    await s3.send(deleteObjectCommand)
+    
     return NextResponse.json({message: 'post deleted'}, {status: 201});
 }
