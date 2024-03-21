@@ -3,6 +3,7 @@ import Link from "next/link";
 import { RegisterLink, LoginLink, LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import Theme from './Theme';
+import ResNavbar from './resNavbar';
 
 export default async function Navbar() {
     const {getUser} = getKindeServerSession();
@@ -65,6 +66,9 @@ export default async function Navbar() {
                         </li>
                       </ul>
                     </div>
+                    <ResNavbar user={user} >
+                      <Theme />
+                    </ResNavbar>
                   </div>
                 </div>
             </nav>
