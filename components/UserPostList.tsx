@@ -12,6 +12,7 @@ import { db } from '@/db';
 import { posts } from '@/db/schema/posts';
 import { media } from '@/db/schema/media';
 import { desc, eq } from 'drizzle-orm';
+import Image from 'next/image';
 
 type Posts = {
     id: number;
@@ -38,7 +39,7 @@ export default async function UserPostList(){
                         <CardContent>
                             <div className='py-5'>
                                 {medium.map((m: any) => (
-                                    <img key={m.id} src={m.post_id == p.id ? m.url : ''} className={m.post_id == p.id ? "image rounded-xl mb-5 object-fill w-[300px] mx-auto" : "hidden"} alt="media"/>
+                                    <Image key={m.id} src={m.post_id == p.id ? m.url : ''} className={m.post_id == p.id ? "image rounded-xl mb-5 object-fill w-[400px] mx-auto" : "hidden"} alt="media" width={400} height={400}/>
                                 ))}
                                 <h3 className="post_user">@{p.kindeAuthName.toLowerCase()}</h3>
                                 <h3 className="title">{ p.title } - { p.event_date}</h3>

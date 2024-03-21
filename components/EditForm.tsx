@@ -1,7 +1,7 @@
 'use client';
 import '@/styles/side.css';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from "@/components/ui/button"
@@ -19,7 +19,7 @@ export default function EditForm({id, title, caption, location, event_date}: {id
       setValue("new_caption", caption);
       setValue("new_location", location);
       setValue("new_event_date", event_date);
-    }, [setValue])
+    }, [setValue, title, caption, location, event_date]);
 
 
     const { isAuthenticated, isLoading } = useKindeBrowserClient();

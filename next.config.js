@@ -6,6 +6,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'se-bn-local.s3.us-east-1.amazonaws.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'se-bn-prod.s3.us-east-1.amazonaws.com',
+            }
         ],
     },
 }

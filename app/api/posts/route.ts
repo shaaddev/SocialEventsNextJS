@@ -24,7 +24,7 @@ export async function DELETE(req: any) {
     const {isAuthenticated} = getKindeServerSession();
     
     if (!isAuthenticated){
-        return {failure: "Not Authenticated"}
+        return NextResponse.json({message: 'Not Authenticated'}, {status: 401});
     }
     const id = req.nextUrl.searchParams.get('id');
 
