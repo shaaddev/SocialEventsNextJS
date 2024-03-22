@@ -24,16 +24,16 @@ export default function Theme(){
 
     if (resolvedTheme === 'dark'){
         return (
-            <button onClick={() => setTheme('light')} className='text-slate-200 inline align-middle'>
-                <BsSun className='w-5 h-5 '/>
+            <button onClick={() => setTheme('light')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border'>
+                <BsSun className='w-4 h-4 lg:w-5 lg:h-5'/>
             </button>
         )
     }
 
     if (resolvedTheme === 'light'){
         return (
-            <button onClick={() => setTheme('dark')} className='text-slate-200 inline align-middle'>
-                <BsMoon className='w-5 h-5 '/>
+            <button onClick={() => setTheme('dark')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border border-white border-opacity-10'>
+                <BsMoon className='w-4 h-4 lg:w-5 lg:h-5'/>
             </button>
         )
     }
