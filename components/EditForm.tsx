@@ -1,5 +1,4 @@
 'use client';
-import '@/styles/side.css';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';

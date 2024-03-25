@@ -1,4 +1,3 @@
-import '@/styles/base.css';
 import Link from "next/link";
 import { RegisterLink, LoginLink, LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";

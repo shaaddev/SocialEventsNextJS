@@ -1,5 +1,4 @@
 'use client';
-import '@/styles/side.css';
 import { FaTrash } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 
