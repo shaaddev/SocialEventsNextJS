@@ -24,7 +24,7 @@ export default function Theme(){
 
     if (resolvedTheme === 'dark'){
         return (
-            <button onClick={() => setTheme('light')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border'>
+            <button onClick={() => setTheme('light')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border' aria-label='sun'>
                 <BsSun className='w-4 h-4 lg:w-5 lg:h-5'/>
             </button>
         )
@@ -32,7 +32,7 @@ export default function Theme(){
 
     if (resolvedTheme === 'light'){
         return (
-            <button onClick={() => setTheme('dark')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border border-white border-opacity-10'>
+            <button onClick={() => setTheme('dark')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border border-white border-opacity-10' aria-label='moon'>
                 <BsMoon className='w-4 h-4 lg:w-5 lg:h-5'/>
             </button>
         )
