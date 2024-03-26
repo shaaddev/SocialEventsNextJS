@@ -7,9 +7,14 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import { IoMdMenu, IoMdClose } from "react-icons/io";
+import { navItems, non_user_items } from "./Navbar";
+import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/dist/types";
 
-
-export default function ResNavbar({children, user}: {children: React.ReactNode, user: any}) {
+export default function ResNavbar({
+   theme, user
+}:{
+    theme: React.ReactNode, user: KindeUser | null
+}) {
     
 
     return(
@@ -32,42 +37,43 @@ export default function ResNavbar({children, user}: {children: React.ReactNode, 
                         <ul className="flex flex-col gap-2 w-full text-center">
                             {user ? (
                                 <>
-                                    <li className="w-full border border-white border-opacity-10 p-2 rounded-xl">
-                                        <Link href="/posts/create" className="flex items-center justify-center">
-                                            Create Post
-                                        </Link>
-                                    </li>
-                                    <li className="w-full border border-white border-opacity-10 p-2 rounded-xl">
-                                        <Link href="/posts/list" className="flex items-center justify-center">
-                                            Your Posts
-                                        </Link>
-                                    </li>
-                                    <li className="w-full border border-white border-opacity-10 p-2 rounded-xl">
-                                        <Link href="/" className="flex items-center justify-center">
-                                            Home
-                                        </Link>
-                                    </li>
-                                    <li className="w-full border border-white border-opacity-10 p-2 rounded-xl">
-                                        <LogoutLink className='flex items-center justify-center'>Log out</LogoutLink>
-                                    </li>
+                                    {navItems.slice(0, 4).map((n) => (
+                                        <li 
+                                          key={n.name}
+                                          className="w-full border border-white border-opacity-10 p-2 rounded-xl"
+                                        >
+                                          {n.route ? (
+                                            <Link href={n.route} className="flex items-center justify-center">
+                                              {n.name}
+                                            </Link>
+                                          ) : (
+                                            <LogoutLink className='flex items-center justify-center'>{n.name}</LogoutLink>
+                                          )}
+                                        </li>
+                                    ))}
                                 </>
                             ) : (
                                 <>
-                                    <li className="w-full border border-white border-opacity-10 p-2 rounded-xl">
-                                        <Link href="/" className="flex items-center justify-center">
-                                            Home
-                                        </Link>
-                                    </li>
-                                    <li className="w-full border border-white border-opacity-10 p-2 rounded-xl">
-                                        <LoginLink className='flex items-center justify-center'>Login</LoginLink>
-                                    </li>
-                                    <li className="w-full border border-white border-opacity-10 p-2 rounded-xl">
-                                        <RegisterLink className='flex items-center justify-center'>Sign up</RegisterLink>
-                                    </li>
+                                    {non_user_items.map((n) => (
+                                        <li 
+                                            key={n.name} 
+                                            className="w-full border border-white border-opacity-10 p-2 rounded-xl"
+                                        >
+                                          {n.route ? (
+                                            <Link href={n.route} className="flex items-center justify-center">
+                                              {n.name}
+                                            </Link>
+                                          ) : n.name === 'Login' ? (
+                                            <LoginLink className='flex items-center justify-center'>Login</LoginLink>
+                                          ) : (
+                                            <RegisterLink className='flex items-center justify-center'>Sign up</RegisterLink>
+                                          )}
+                                        </li>
+                                    ))}
                                 </>
                             )}
                             <li>
-                                {children}
+                                {theme}
                             </li>
                         </ul>
                     </div>

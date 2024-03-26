@@ -4,6 +4,36 @@ import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import Theme from './Theme';
 import ResNavbar from './resNavbar';
 
+export const navItems = [
+  {
+    route: '/posts/create',
+    name: 'Create Post',
+  },
+  {
+    route: '/posts/list',
+    name: 'Your Posts',
+  },
+  {
+    route: '/',
+    name: 'Home',
+  },
+  {
+    route: '',
+    name: 'Log out',
+  },
+  {
+    route: '',
+    name: 'Login'
+  },
+  {
+    route: '',
+    name: 'Sign Up'
+  } 
+]
+
+export const non_user_items = [...navItems.filter(items => items.name === 'Home'), ...navItems.slice(-2)]
+
+
 export default async function Navbar() {
     const {getUser} = getKindeServerSession();
     const user = await getUser();
@@ -26,48 +56,46 @@ export default async function Navbar() {
                       <ul className="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
                         {user ? (
                           <>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <Link href="/posts/create" className="flex items-center">
-                                Create Post
-                              </Link>
-                            </li>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <Link href="/posts/list" className="flex items-center">
-                                Your Posts
-                              </Link>
-                            </li>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <Link href="/" className="flex items-center">
-                                Home
-                              </Link>
-                            </li>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <LogoutLink className='flex items-center'>Log out</LogoutLink>
-                            </li>
+                            {navItems.slice(0, 4).map((n) => (
+                              <li 
+                                key={n.name}
+                                className="block p-1 font-sans text-sm antialiased font-normal leading-normal"
+                              >
+                                {n.route ? (
+                                  <Link href={n.route} className="flex items-center hover:opacity-75 transition-all">
+                                    {n.name}
+                                  </Link>
+                                ) : (
+                                  <LogoutLink className="flex items-center hover:opacity-75 transition-all">
+                                    {n.name}
+                                  </LogoutLink>
+                                )}
+                              </li>
+                            ))}
                           </>
                         ) : (
                           <>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <Link href="/" className="flex items-center">
-                                Home
-                              </Link>
-                            </li>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <LoginLink className='flex items-center'>Login</LoginLink>
-                            </li>
-                            <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                              <RegisterLink className='flex items-center'>Sign up</RegisterLink>
-                            </li>
+                            {non_user_items.map((n) => (
+                              <li key={n.name} className="block p-1 font-sans text-sm antialiased font-normal leading-normal">
+                                {n.route ? (
+                                  <Link href={n.route} className="flex items-center hover:opacity-75 transition-all">
+                                    {n.name}
+                                  </Link>
+                                ) : n.name === 'Login' ? (
+                                  <LoginLink className='flex items-center hover:opacity-75 transition-all'>Login</LoginLink>
+                                ) : (
+                                  <RegisterLink className='flex items-center hover:opacity-75 transition-all'>Sign up</RegisterLink>
+                                )}
+                              </li>
+                            ))}
                           </>
                         )}
-                        <li className='block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900'>
+                        <li className='block p-1 font-sans text-sm antialiased font-normal leading-normal'>
                           <Theme />
                         </li>
                       </ul>
                     </div>
-                    <ResNavbar user={user} >
-                      <Theme />
-                    </ResNavbar>
+                    <ResNavbar theme={<Theme />} user={user} />
                   </div>
                 </div>
             </nav>
