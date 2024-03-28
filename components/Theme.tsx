@@ -12,19 +12,26 @@ export default function Theme(){
 
     if (!mounted) return
 
-    if (resolvedTheme === 'dark'){
-        return (
-            <button onClick={() => setTheme('light')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border' aria-label='sun'>
-                <BsSun className='w-4 h-4 lg:w-5 lg:h-5'/>
-            </button>
-        )
+    const toggleTheme = () => {
+        if (resolvedTheme === 'dark'){
+            setTheme('light')
+        } else if (resolvedTheme === 'light'){
+            setTheme('dark')
+        }
     }
 
-    if (resolvedTheme === 'light'){
-        return (
-            <button onClick={() => setTheme('dark')} className='text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border border-white border-opacity-10' aria-label='moon'>
-                <BsMoon className='w-4 h-4 lg:w-5 lg:h-5'/>
-            </button>
-        )
-    }
+    return (
+        <button 
+            onClick={toggleTheme}
+            className={btn_style}    
+        >
+            {resolvedTheme === 'dark' ? 
+            (<BsSun className={btn_size} aria-label='the sun'/>) : 
+            (<BsMoon className={btn_size} aria-label='the moon'/>)}
+        </button>
+    )
+    
 }
+
+const btn_style = 'text-slate-200 inline align-middle p-2 lg:p-0 lg:border-none rounded-xl border'
+const btn_size = 'w-5 h-5'
